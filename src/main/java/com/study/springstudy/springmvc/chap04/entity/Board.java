@@ -1,7 +1,11 @@
 package com.study.springstudy.springmvc.chap04.entity;
 
+import com.study.springstudy.springmvc.chap03.dto.ScorePostDto;
+import com.study.springstudy.springmvc.chap03.entity.Grade;
 import lombok.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 @Setter @Getter @ToString
@@ -16,4 +20,14 @@ public class Board {
     private String writer; // 작성자명
     private int viewCount; // 조회수
     private LocalDateTime regDateTime; // 작성일시
+
+    public Board(ResultSet rs) throws SQLException {
+        this.boardNo = rs.getInt("board_no");
+        this.title = rs.getString("title");
+        this.content = rs.getString("content");
+        this.writer = rs.getString("writer");
+        this.viewCount = rs.getInt("view_count");
+        this.regDateTime = rs.getTimestamp("reg_date_time").toLocalDateTime();
+    }
+
 }

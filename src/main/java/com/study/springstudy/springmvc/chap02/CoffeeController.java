@@ -1,5 +1,8 @@
 package com.study.springstudy.springmvc.chap02;
 
+import com.study.springstudy.springmvc.chap03.repository.ScoreJdbcRepository;
+import com.study.springstudy.springmvc.chap03.repository.ScoreMemoryRepository;
+import com.study.springstudy.springmvc.chap03.repository.ScoreRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/coffee/*")
 public class CoffeeController {
+
+    private ScoreRepository repository = new ScoreJdbcRepository();
 
     /**
      * @request-uri : /coffee/order

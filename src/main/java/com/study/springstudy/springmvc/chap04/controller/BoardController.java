@@ -7,6 +7,7 @@ import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.repository.BoardRepository;
+import com.study.springstudy.springmvc.chap04.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,19 +26,18 @@ import java.util.stream.Collectors;
 public class BoardController {
 
     private final BoardRepository repository;
+    private final BoardService service;
 
 //    // 1. 목록 조회 요청 (/board/list : GET)
     @GetMapping("/list")
     public String list(Model model) {
 
         // 1. 데이터베이스로부터 게시글 목록 조회
-        List<Board> boardList = repository.findAll();
+        List<BoardListResponseDto> bList = service.getList();
 
         // 2. 클라이언트에 데이터를 보내기전에 렌더링에 필요한
         //    데이터만 추출하기
-        List<BoardListResponseDto> bList = boardList.stream()
-                .map(b -> new BoardListResponseDto(b))
-                .collect(Collectors.toList());
+
 
 //        List<BoardListResponseDto> bList = new ArrayList<>();
 //
@@ -72,7 +72,7 @@ public class BoardController {
         Board b = dto.toEntity();
 
         // 3. 데이터베이스 저장 명령
-        repository.save(b);
+        service.save(b);
         return "redirect:/board/list";
     }
 
@@ -81,7 +81,7 @@ public class BoardController {
     @GetMapping("/delete")
     public String delete(int bno) {
 
-        repository.delete(bno);
+        service.delete(bno);
 
         return "redirect:/board/list";
     }
@@ -97,11 +97,11 @@ public class BoardController {
         System.out.println("bno = " + bno);
 
         // 2. 데이터베이스로부터 해당 글번호 데이터 조회하기
-        Board b = repository.findOne(bno);
-        if (b != null) repository.upViewCount(bno);
+        BoardDetailResponseDto b = service.findOne(bno);
+        if (b != null) service.upViewCount(bno);
 
         // 3. JSP파일에 조회한 데이터 보내기
-        model.addAttribute("bbb", new BoardDetailResponseDto(b));
+        model.addAttribute("bbb", b);
 
 
         return "board/detail";

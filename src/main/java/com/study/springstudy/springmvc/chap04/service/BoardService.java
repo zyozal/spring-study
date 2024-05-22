@@ -1,5 +1,7 @@
 package com.study.springstudy.springmvc.chap04.service;
 
+import com.study.springstudy.springmvc.chap04.common.Page;
+import com.study.springstudy.springmvc.chap04.common.Search;
 import com.study.springstudy.springmvc.chap04.dto.BoardDetailResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
@@ -16,8 +18,8 @@ public class BoardService {
 
     private final BoardMapper mapper;
 
-    public List<BoardListResponseDto> getList() {
-        List<BoardListResponseDto> collect = mapper.findAll().stream()
+    public List<BoardListResponseDto> getList(Search page) {
+        List<BoardListResponseDto> collect = mapper.findAll(page).stream()
                 .map(BoardListResponseDto::new)
                 .collect(Collectors.toList());
         return collect;
@@ -40,4 +42,7 @@ public class BoardService {
         mapper.upViewCount(boardNo);
     }
 
+    public int getCount() {
+        return mapper.count();
+    }
 }

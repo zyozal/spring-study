@@ -7,8 +7,8 @@ import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
-import com.study.springstudy.springmvc.chap05.ReplyMapper;
 import com.study.springstudy.springmvc.chap05.entity.Reply;
+import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +53,11 @@ public class BoardService {
 
         // 댓글 목록 조회
         List<Reply> replies = replyMapper.findAll(bno);
+
         BoardDetailResponseDto responseDto = new BoardDetailResponseDto(b);
         responseDto.setReplies(replies);
 
-        return new BoardDetailResponseDto(b);
+        return responseDto;
     }
 
     public int getCount(Search search) {

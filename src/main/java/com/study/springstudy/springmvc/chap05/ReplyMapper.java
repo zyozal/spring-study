@@ -1,4 +1,4 @@
-package com.study.springstudy.springmvc.chap05;
+package com.study.springstudy.springmvc.chap05.mapper;
 
 import com.study.springstudy.springmvc.chap05.entity.Reply;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,9 +17,9 @@ public interface ReplyMapper {
     // 댓글 삭제
     boolean delete(long replyNo);
 
-    // 댓글 목록 조회
+    // 특정 게시물에 달린 댓글 목록 조회
     List<Reply> findAll(long boardNo);
 
     // 총 댓글 수 조회
-    int count(int boardNo);
+    int count(long boardNo);
 }

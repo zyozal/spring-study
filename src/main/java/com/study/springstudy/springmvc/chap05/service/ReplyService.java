@@ -7,7 +7,10 @@ import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +52,10 @@ public class ReplyService {
     }
 
     // 댓글 삭제
-    public void remove() {
-
+    @Transactional
+    public List<ReplyDetailDto> remove(long rno) {
+        long bno = replyMapper.findBno(rno);
+        boolean flag = replyMapper.delete(rno);
+        return flag ? getReplies(bno) : Collections.emptyList();
     }
 }

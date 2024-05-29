@@ -2,6 +2,7 @@ package com.study.springstudy.springmvc.chap05.service;
 
 import com.study.springstudy.springmvc.chap04.common.Page;
 import com.study.springstudy.springmvc.chap04.common.PageMaker;
+import com.study.springstudy.springmvc.chap05.dto.request.ReplyModifyDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springstudy.springmvc.chap05.dto.response.ReplyDetailDto;
 import com.study.springstudy.springmvc.chap05.dto.response.ReplyListDto;
@@ -12,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +28,7 @@ public class ReplyService {
         List<Reply> replies = replyMapper.findAll(boardNo, page);
 
         List<ReplyDetailDto> dtoList = replies.stream()
-                .map(ReplyDetailDto::new)
+                .map(r -> new ReplyDetailDto(r))
                 .collect(Collectors.toList());
 
         return ReplyListDto.builder()
@@ -55,8 +54,11 @@ public class ReplyService {
     }
 
     // 댓글 수정
-    public void modify() {
+    public ReplyListDto modify(ReplyModifyDto dto) {
 
+        replyMapper.modify(dto.toEntity());
+
+        return getReplies(dto.getBno(), new Page(1, 10));
     }
 
     // 댓글 삭제
@@ -68,4 +70,6 @@ public class ReplyService {
         // 삭제 후 삭제된 목록을 리턴
         return flag ? getReplies(bno, new Page(1, 10)) : null;
     }
+
+
 }

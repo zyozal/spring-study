@@ -4,8 +4,8 @@
         <html lang="ko">
 
         <head>
-            <%@ include file="../include/static-head.jsp" %>
 
+            <%@ include file="../include/static-head.jsp" %>
 
             <style>
                 .form-container {
@@ -128,26 +128,29 @@
                 }
             </style>
         </head>
-<!-- 프리뷰넥스트 색깔. -->
+
         <body>
+
             <%@ include file="../include/header.jsp" %>
+
             <div id="wrap" class="form-container" data-bno="${bbb.boardNo}">
 
-                <h1>${bbb.boardNo}번 게시물 내용~ </h1>
+                <h1>${requestScope.bbb.boardNo}번 게시물 내용~ </h1>
                 <h2># 작성일자: ${bbb.regDateTime}</h2>
                 <label for="writer">작성자</label>
                 <input type="text" id="writer" name="writer" value="${bbb.writer}" readonly>
                 <label for="title">제목</label>
                 <input type="text" id="title" name="title" value="${bbb.title}" readonly>
                 <label for="content">내용</label>
-                <div id="content">${bbb.content}</div>
+                <div id="content">
+                    ${bbb.content}
+                </div>
                 <div class="buttons">
                     <button class="list-btn" type="button" onclick="window.location.href='${ref}'">목록</button>
                 </div>
 
 
                 <!-- 댓글 영역 -->
-
                 <div id="replies" class="row">
                     <div class="offset-md-1 col-md-10">
                         <!-- 댓글 쓰기 영역 -->
@@ -166,8 +169,7 @@
                                             <label for="newReplyWriter" hidden>댓글 작성자</label>
                                             <input id="newReplyWriter" name="replyWriter" type="text"
                                                 class="form-control" placeholder="작성자 이름" style="margin-bottom: 6px;">
-                                            <button id="replyAddBtn" type="button" class="btn btn-dark form-control">등록
-                                            </button>
+                                            <button id="replyAddBtn" type="button" class="btn btn-dark form-control">등록</button>
                                         </div>
                                     </div>
                                 </div>
@@ -185,15 +187,15 @@
                             <div id="replyCollapse" class="card">
                                 <div id="replyData">
                                     <!--
-                        < JS로 댓글 정보 DIV삽입 >
-                    -->
+                                        < JS로 댓글 정보 DIV삽입 >
+                                    -->
                                 </div>
 
                                 <!-- 댓글 페이징 영역 -->
                                 <ul class="pagination justify-content-center">
                                     <!--
-                        < JS로 댓글 페이징 DIV삽입 >
-                    -->
+                                        < JS로 댓글 페이징 DIV삽입 >
+                                    -->
                                 </ul>
                             </div>
                         </div> <!-- end reply content -->
@@ -241,7 +243,9 @@
                 </div>
 
 
+
             </div>
+
 
             <script type="module" src="/assets/js/reply.js"></script>
 

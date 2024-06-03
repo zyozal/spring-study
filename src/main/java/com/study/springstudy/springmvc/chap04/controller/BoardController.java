@@ -10,12 +10,11 @@ import com.study.springstudy.springmvc.chap04.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -54,13 +53,13 @@ public class BoardController {
     // 3. 게시글 등록 요청 (/board/write : POST)
     // -> 목록조회 요청 리다이렉션
     @PostMapping("/write")
-    public String write(BoardWriteRequestDto dto) {
+    public String write(BoardWriteRequestDto dto, HttpSession session) {
         System.out.println("/board/write POST! ");
 
         // 1. 브라우저가 전달한 게시글 내용 읽기
         System.out.println("dto = " + dto);
 
-        service.insert(dto);
+        service.insert(dto, session);
 
         return "redirect:/board/list";
     }
@@ -68,7 +67,7 @@ public class BoardController {
     // 4. 게시글 삭제 요청 (/board/delete : GET)
     // -> 목록조회 요청 리다이렉션
     @GetMapping("/delete")
-    public String delete(int bno) {
+    public String delete(@RequestParam int bno) {
         System.out.println("/board/delete GET");
 
         service.remove(bno);
@@ -80,14 +79,15 @@ public class BoardController {
     @GetMapping("/detail")
     public String detail(int bno,
                          Model model,
-                         HttpServletRequest request) {
+                         HttpServletRequest request,
+                         HttpServletResponse response) {
         System.out.println("/board/detail GET");
 
         // 1. 상세조회하고 싶은 글번호를 읽기
         System.out.println("bno = " + bno);
 
         // 2. 데이터베이스로부터 해당 글번호 데이터 조회하기
-        BoardDetailResponseDto dto = service.detail(bno);
+        BoardDetailResponseDto dto = service.detail(bno, request, response);
 
         // 3. JSP파일에 조회한 데이터 보내기
         model.addAttribute("bbb", dto);

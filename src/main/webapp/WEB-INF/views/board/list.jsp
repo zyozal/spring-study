@@ -4,9 +4,9 @@
     <html>
 
     <head>
-     
-      <%@ include file="../include/static-head.jsp" %>
 
+      <%@ include file="../include/static-head.jsp" %>
+      
       <link rel="stylesheet" href="/assets/css/list.css">
 
       <style>
@@ -18,7 +18,9 @@
     </head>
 
     <body>
+
       <%@ include file="../include/header.jsp" %>
+
       <div id="wrap">
 
         <div class="main-title-wrapper">
@@ -69,7 +71,7 @@
               <div class="card-wrapper">
                 <section class="card" data-bno="${b.bno}">
                   <div class="card-title-wrapper">
-                    <h2 class="card-title">${b.shortTitle} [${b.replyCount}]</h2>
+                    <h2 class="card-title">${b.shortTitle} [${b.replyCount}] </h2>
                     <div class="time-view-wrapper">
                       <div class="time">
                         <i class="far fa-clock"></i>
@@ -94,11 +96,16 @@
                     ${b.shortContent}
                   </div>
                 </section>
-                <div class="card-btn-group">
-                  <button class="del-btn" data-href="/board/delete?bno=${b.bno}">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
+
+                <!-- 관리자이거나 본인이 쓴글에만 렌더링되도록 -->
+                <c:if test="${login.auth == 'ADMIN' || login.account == b.account}">
+                  <div class="card-btn-group">
+                    <button class="del-btn" data-href="/board/delete?bno=${b.bno}">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </c:if>
+
               </div>
               <!-- end div.card-wrapper -->
             </c:forEach>
@@ -234,7 +241,7 @@
           $targetCard?.classList.remove('card-hover');
 
           const $delBtn = e.target.closest('.card-wrapper')?.querySelector('.del-btn');
-          $delBtn.style.opacity = '0';
+          if ($delBtn) $delBtn.style.opacity = '0';
         }
 
 
@@ -247,7 +254,7 @@
           $targetCard?.classList.add('card-hover');
 
           const $delBtn = e.target.closest('.card-wrapper')?.querySelector('.del-btn');
-          $delBtn.style.opacity = '1';
+          if ($delBtn) $delBtn.style.opacity = '1';
         }
 
         $cardContainer.onmousedown = e => {

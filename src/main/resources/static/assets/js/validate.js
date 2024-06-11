@@ -202,7 +202,7 @@ const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*?_~])[A-Za-z\d!@#$
 
 // 서버에 중복확인 비동기 요청
 export const checkAvailability = async (type, keyword) => {
-  const response = await fetch(`http://localhost:8383/members/check?type=${type}&keyword=${keyword}`);
+  const response = await fetch(`http://172.30.1.9:8383/members/check?type=${type}&keyword=${keyword}`);
   const flag = await response.json();
   return !flag;
 };
@@ -221,6 +221,7 @@ const namePattern = /^[가-힣]+$/;
 
 // 이메일 패턴: 기본적인 이메일 형식
 const emailPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+
 
 export const validateInput = {
   // 아이디 유효성 검사 함수
@@ -241,7 +242,6 @@ export const validateInput = {
     // 정규표현식 검사
     if (!passwordPattern.test(value)) return { valid: false, message: '비밀번호는 영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다!' };
     // 유효한 경우
-    
     return { valid: true };
   },
   // 비밀번호 확인 유효성 검사 함수
